@@ -3,11 +3,19 @@ const router = express.Router();
 router.use(express.json());
 
 router.get("/", (req, res) => {
+  // レスポンスに任意のHTTPヘッダを追加
+  res.setHeader("X-Timestamp", Date.now());
   let message = req.query.message;
+  // リクエストから任意のHTTPヘッダを取得
+  const lang = req.headers["x-lang"];
 
   if (message === "") {
     res.status(400);
-    message = "messageが空です。";
+    if (lang === "en") {
+      message = "message is empty.";
+    } else {
+      message = "messageが空です。";
+    }
   }
   res.send({ message });
 });
